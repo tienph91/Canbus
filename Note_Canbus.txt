@@ -1,0 +1,293 @@
+- localhost hôm qua: Oke
+ - script này làm gì: Oke
+ 
+ --- Để start được localhost thì phải start tất cả các service lên.
+
+
+Cách sử dụng Git
+
+1. Cài đặt Git trên windows.
+
+Để sử dụng các dòng lệnh của Git thì cần mở ứng dụng Git Bash lên.
+
+
+2. Thiết lập chứng thực cá nhân
+Sau khi cài Git, việc đầu tiên bạn nên làm là khai báo tên và địa chỉ email vào trong file cấu hình của Git trên máy(.gitconfig)
+
+	$ git config --global user.name "tienph"
+	$ git config --global user.email "tienph@rikkeisoft.com"
+
+Để kiểm tra thông tin chứng thực trên user, phần vừa setup ta sử dụng câu lệnh
+	$ cat ~/.gitconfig
+
+~ nghĩa là thư mục gốc của user
+
+Sau khi chạy câu lệnh trên, kết quả sẽ là:
+	[user]
+ 		name = tienph		
+		email = tienph@rikkeisoft.com
+
+3. Cách tạo một repository
+Repository (kho chứa) nghĩa là nơi mà bạn sẽ lưu trữ mã nguồn và một người khác có thể sao chép (clone) lại mã nguồn đó nhằm làm việc. 
+Repository có hai loại là Local Repository (Kho chứa trên máy cá nhân) và Remote Repository (Kho chứa trên một máy chủ từ xa).
+
+Trước tiên bạn cần đăng nhập vào Github, sau đó ấn vào dấu + trên menu và chọn New repository.
+
+Bây giờ hãy truy cập vào thư mục working tree (thư mục vừa clone repository về) và thử tạo ra một file tên là README.txt, 
+sau đó dùng lệnh git add để đưa file này vào Staging Area.
+
+	$ cd hoc-git
+	$ echo "# Huong dan Git co ban" > README.txt
+	$ git add README.txt
+	$ git commit -m "First commit on Github"
+	[master (root-commit) 6e729a4] First commit on Github
+	1 file changed, 1 insertion(+)
+	create mode 100644 README.md
+	
+
+Tuy nhiên sau khi commit xong, tập tin đã được commit sẽ vẫn không thể xuất hiện trong kho chứa trên Github,
+mà bạn phải làm thêm một việc nữa đó là dùng lệnh git push để đẩy các tập tin đã được commit lên Github. 
+Lưu ý rằng bạn sẽ cần nhập tài khoản và mật khẩu Github.
+
+	$ git push origin master
+	
+	Counting objects: 3, done.
+	Writing objects: 100% (3/3), 244 bytes | 0 bytes/s, done.
+	Total 3 (delta 0), reused 0 (delta 0)
+	To https://github.com/thachphamblog/hoc-git
+	* [new branch] master -> master
+	
+origin nghĩa là tên remote (xem ở bài sau) và master là tên branch, Bây giờ bạn có thể kiểm tra kho chứa của bạn trên Github rồi đó.
+
+
+Có thể bạn sẽ thấy mỗi khi push lên Github thì nó hiển thị ra thông báo quá dài dòng, 
+bạn có thể cho ẩn các thông báo đi mà chỉ hiển thị dòng khai báo username và password trên Github thì có thể thiết lập với lệnh này.
+
+	git config --global push.default simple
+
+Tuy nhiên nếu bạn không thích bị hỏi mật khẩu nữa thì có thể sử dụng SSH với Github
+
+
+4. Hiểu thêm về Commit và Staging Area
+Staging Area nghĩa là một khu vực mà nó sẽ được chuẩn bị cho quá trình commit.
+Trước hết, bạn cần phải hiểu rằng trong các hệ thống quản lý phiên bản (Version Control System) thì các dữ liệu sẽ được lưu trữ ở hai nơi, một là thư mục bạn đang làm việc trên máy tính 
+(working tree, mình không nhắc lại nữa đâu) và một là kho chứa mã nguồn (repository) sau khi bạn đã thực hiện thay đổi (ví dụ như kho chứa trên Github).
+
+Nhưng với Git thì nó có thêm một lựa chọn nữa đó là có thêm một khu vực trung gian gọi là Staging Area và đây chính là một lợi thế lớn của Git. 
+Staging Area nghĩa là khu vực sẽ lưu trữ những thay đổi của bạn trên tập tin để nó có thể được commit, 
+vì muốn commit tập tin nào thì tập tin đó phải nằm trong Staging Area. Một tập tin khi nằm trong Staging Area sẽ có trạng thái là Stagged
+
+Và để đưa một tập tin vào Staging Area thì bạn sẽ cần phải sử dụng lệnh git add tên_file
+
+Commit là gì và nó hoạt động ra sao?
+Hiểu đơn giản hơn, commit nghĩa là một hành động để Git lưu lại một bản chụp (snapshot) của các sự thay đổi trong thư mục làm việc, 
+và các tập tin và thư mục được thay đổi đã phải nằm trong Staging Area. Mỗi lần commit nó sẽ được lưu lại lịch sử chỉnh sửa của mã nguồn kèm theo tên và địa chỉ email của người commit. 
+Ngoài ra trong Git bạn cũng có thể khôi phục lại tập tin trong lịch sử commit của nó để chia cho một phân nhánh (branch) khác, 
+đây là mấu chốt của việc bạn sẽ dễ dàng khôi phục lại các thay đổi trước đó.
+
+Và tất nhiên, lệnh commit trong Git sẽ là git commit -m "Lời nhắn".
+
+Và nếu bạn muốn đưa tập tin lên repository thì bạn phải commit nó trước rồi sau đó lệnh git push origin master sẽ có nhiệm vụ đưa toàn bộ các tập tin đã được commit lên repository.
+
+Điều kiện gì để commit một tập tin?
+Nếu bạn muốn commit một tập tin đó, bạn sẽ cần phải đưa tập tin đó vào trạng thái tracked bằng lệnh git add tên_file. Trong git có hai loại trạng thái chính đó là Tracked và Untracked, cụ thể:
+
+Tracked – Là tập tin đã được đánh dấu theo dõi trong Git để bạn làm việc với nó. Và trạng thái Tracked nó sẽ có thêm các trạng thái phụ khác là Unmodified (chưa chỉnh sửa gì), Modified (đã chỉnh sửa) và Staged 
+(đã sẵn sàng để commit).
+Untracked – Là tập tin còn lại mà bạn sẽ không muốn làm việc với nó trong Git.
+Nhưng bạn phải nên biết rằng nếu tập tin đó đã được Tracked nhưng đang rơi vào trạng thái (Modified) thì nó vẫn sẽ không thể commit được mà bạn phải đưa nó về Staged cũng bằng lệnh git add.
+
+Bỏ qua Staging Area để commit
+Như có nói ở trên là một tập tin sau khi được thay đổi hay tạo mới thì nó phải được thêm vào Staging Area với lệnh git add. 
+Tuy nhiên, bạn có thể đưa một tập tin đã được Tracked để commit mà không cần đưa nó vào Staging Area với tham số -a trong lệnh git commit. 
+Ví dụ: git commit -a -m "Skipped Staging Are to commit".
+
+Nếu bạn tạo ra hoặc thêm vào một tập tin mới vào trong thư mục làm việc của bạn thì nó sẽ ở trạng thái Untracked. 
+Bây giờ mình thử tạo ra một tập tin mới tên là faq.html, sau đó dùng lệnh git status để xem trạng thái của Git trong thư mục làm việc.
+	
+	$ touch faq.html
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	Untracked files:
+	(use "git add <file>..." to include in what will be committed)
+
+	faq.html
+
+	nothing added to commit but untracked files present (use "git add" to track)
+
+Note: Lệnh touch là tạo ra một tập tin rỗng
+
+Bây giờ bạn sẽ thấy nó đã liệt kê ra tên tập tin đang ở trạng thái Untracked. Để đưa nó về Tracked bạn sẽ sử dụng lệnh git add và xem lại trạng thái của nó.
+	$ git add faq.html
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	Changes to be committed:
+	(use "git reset HEAD <file>..." to unstage)
+
+	new file: faq.html
+
+Bây giờ bạn thấy, tập tin faq.html của mình đã được đưa về trạng thái Staged và nó có thể được commit. 
+Tại sao? Vì bạn phải biết rằng nếu một tập tin ở trạng thái Untracked mà được đưa về Tracked thì nó sẽ nằm ở trạng thái Staged luôn, 
+trừ khi bạn thay đổi nội dung tập tin này thì nó sẽ đưa về trạng thái Modified và nó không thể commit trừ khi bạn gõ lệnh git add cho nó.
+
+Một khi một tập tin đã được đưa về Tracked thì nó sẽ có thể thay đổi giữa 3 trạng thái khác nhau là Modified, Unmodified và Staged.
+
+Trước hết bây giờ mình đã có một tập tin mới đã được đưa về Staged với lệnh git add như ví dụ trên. 
+Bây giờ mình tiến hành thay đổi nội dung của tập tin faq.html này và xem kết quả của lệnh git status.
+	
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	Changes to be committed:
+	(use "git reset HEAD <file>..." to unstage)
+
+	new file: faq.html
+
+	Changes not staged for commit:
+	(use "git add <file>..." to update what will be committed)
+	(use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified: faq.html
+	
+Bạn có thấy sự kỳ lạ ở tập tin faq.html không? Đó là nó được hiển thị ở hai trạng thái Staged (có thể commit) và Modified (không thể commit) hay còn gọi là Unstaged. 
+Sở dĩ có sự kỳ lạ đó ở đây là bởi vì trước đó bạn đã tạo ra tập tin faq.html và đưa về Tracked thì nó cũng đã được đưa về Staged để có thể commit. 
+Tuy nhiên sau đó bạn lại chỉnh sửa nội dung của nó nên nó đã có một phiên bản khác nằm ở trạng thái Modified (không thể commit). 
+Nếu bây giờ bạn gõ lệnh git commit để ủy thác nó thì bản chụp của tập tin faq.html ở lần cuối cùng bạn gõ lệnh git add sẽ được commit lên chứ nó không chứa các nội dung mà bạn vừa thêm vào. 
+Và để nó có thể commit tập tin faq.html đã được chỉnh sửa thì bạn phải gõ lại lệnh git add faq.html lần nữa.
+
+Chuyển tập tin từ Untracked về Tracked
+Trong Git, bạn có thể đưa một tập tin từ Tracked về Untracked với lệnh rm tên_file. Lệnh rm sẽ giúp bạn đưa tập tin về trạng thái Untracked nhưng không xóa hẳn trong ổ cứng.
+
+	$ rm faq.html
+	$ git status
+	On branch master
+	Your branch is up-to-date with 'origin/master'.
+	Changes not staged for commit:
+	(use "git add/rm <file>..." to update what will be committed)
+	(use "git checkout -- <file>..." to discard changes in working directory)
+	deleted: faq.html
+Còn nếu bạn muốn xóa nó luôn thì dùng lệnh git rm -f tên_file và nhớ cẩn thận khi dùng lệnh này.
+
+5. Git log và Undo Commit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I. Thêm 1 project trên máy local lên github sử dụng command line(Tất cả đều sử dụng trong GitBash)
+B1: Phải tạo 1 repository trên máy
+B2: Mở gitBash
+B3: Thay đổi tới thư mục local project, ví dụ: $cd D:\Wp\qlbh(Trong project này sẽ chứa thư mục ẩn .git)
+B4: Initialize the local directory as a Git repository (Khởi tạo thư mục local như là 1 Git repository)
+	git init
+B5: Add the files in your new local repository. This stages them for the first commit(Add các files trong local repository mới của bạn)
+	git add .
+	# Adds the files in the local repository and stages them for commit. To unstage a file, use 'git reset HEAD YOUR-FILE'.
+
+B6: Commit the files that you've staged in your local repository.(Commit files mà bạn đã staged)
+	git commit -m "First commit"
+	# Commits the tracked changes and prepares them to be pushed to a remote repository. To remove this commit and modify the file, use 'git reset --soft HEAD~1' and commit and add the file again.
+	
+B7: Copy đường dẫn của repository trên github
+B8: Trên màn hình command gitBash , thêm vào đường dẫn của remote repository, đó là nơi mà local repository của bạn sẽ được push vào.
+	
+	git remote add origin remote_repository URL
+	#	 Sets the new remote
+	git remote -v
+	# Verifies the new remote URL
+
+B9: Push thay đổi từ local repository tới Github
+	git push origin master
+
+
+II. Clone 1 repository trên 
+
+B1: Bên dưới repository, click Clone hoặc Download
+B2: Copy URL để clone
+B3: Mở GitBash
+B4: Thay đổi thư mục tới thư mục bạn sẽ muốn chứa project clone về
+B5: Sử dụng câu lệnh git clone
+	git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+B6: Ấn enter, local clone sẽ được tạo.
+
+III. Khi thay đổi 1 tập tin, làm thế nào để commit được
+B1. Add lại tất cả các file thay đổi	
+	git status (Check trạng thái xem file nào bị modified)
+	git add .|tên file(. là tất cả các file thay đổi)
+	git status (Check lại, nếu nó hiện xanh là staged)
+	git commit
+	git push 
+	
+	->OK
+
+
+
+I. Tạo và xóa branch trong repository trên github
+1. Trên github, điều chỉnh đến trang chính của repository
+2. Chọn vào branch selector menu
+3. Đánh unique của branch
+4. Enter
+
+---Xóa 1 branch
+1. Trên github, điều đến màn chính của repository
+2. Phía trên list các file, click vào number branch
+3. Cuộn đến branch muốn xóa, click vào hình thùng rác.
